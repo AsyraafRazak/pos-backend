@@ -1,6 +1,103 @@
-@pos_backend_HostAddress = http://localhost:5009
+@host = http://localhost:5009
 
-GET {{pos_backend_HostAddress}}/weatherforecast/
+### 1. Get All Categories
+GET {{host}}/api/v1/categories
 Accept: application/json
 
-###
+### 2. Get All Products (Seeded Catalog)
+GET {{host}}/api/v1/products
+Accept: application/json
+
+### 3. Filter Products by Category (e.g. Hot Beverages = Category 1)
+GET {{host}}/api/v1/products?categoryId=1
+Accept: application/json
+
+### 4. Search Products by Name or Barcode
+GET {{host}}/api/v1/products?search=latte
+Accept: application/json
+
+### 5. Lookup Product by Barcode Scanner
+GET {{host}}/api/v1/products/barcode/100001
+Accept: application/json
+
+### 6. Open a Cashier Shift
+POST {{host}}/api/v1/shifts/open
+Content-Type: application/json
+
+{
+  "cashierId": "cashier-01",
+  "cashierName": "John Doe",
+  "startingFloat": 200.00
+}
+
+### 7. Get Current Active Shift
+GET {{host}}/api/v1/shifts/current?cashierId=cashier-01
+Accept: application/json
+
+### 8. Create / Checkout an Order
+POST {{host}}/api/v1/orders
+Content-Type: application/json
+
+{
+  "orderNumber": "",
+  "tableNumber": "T-05",
+  "type": "DineIn",
+  "subtotal": 17.50,
+  "discountTotal": 0.00,
+  "taxTotal": 0.00,
+  "grandTotal": 17.50,
+  "customerName": "Alice",
+  "notes": "Less ice for latte",
+  "cashierId": "cashier-01",
+  "cashierName": "John Doe",
+  "shiftId": 1,
+  "items": [
+    {
+      "productId": 1,
+      "productName": "Espresso",
+      "unitPrice": 6.50,
+      "quantity": 1,
+      "discountAmount": 0.00,
+      "totalPrice": 6.50,
+      "selectedModifiersJson": "{\"Sugar\":\"No Sugar\"}",
+      "notes": "Extra hot"
+    },
+    {
+      "productId": 3,
+      "productName": "Caffe Latte",
+      "unitPrice": 11.00,
+      "quantity": 1,
+      "discountAmount": 0.00,
+      "totalPrice": 11.00,
+      "selectedModifiersJson": "{\"Syrup\":\"Vanilla\"}",
+      "notes": ""
+    }
+  ],
+  "payments": [
+    {
+      "method": "Cash",
+      "amountTendered": 20.00,
+      "changeGiven": 2.50,
+      "totalPaid": 17.50,
+      "transactionReference": "CASH-TX-001"
+    }
+  ]
+}
+
+### 9. Get Orders List
+GET {{host}}/api/v1/orders
+Accept: application/json
+
+### 10. Check Outbox Sync Queue
+GET {{host}}/api/v1/sync/pending
+Accept: application/json
+
+### 11. Close Shift
+POST {{host}}/api/v1/shifts/1/close
+Content-Type: application/json
+
+{
+  "actualCash": 217.50,
+  "closingNotes": "Shift balanced perfectly."
+}
+
