@@ -18,15 +18,23 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
 
-// 3. Configure CORS for Frontend (Vite on port 5173, etc.)
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() 
-    ?? new[] { "http://localhost:5173", "http://localhost:3000" };
+// 3. Configure CORS for Frontend (Vite on port 5173, preview on 4173, etc.)
+var rawOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() 
+    ?? new[] { "http://localhost:5173", "http://localhost:4173", "http://localhost:3000" };
+
+var allowedOrigins = rawOrigins.Select(o => o.TrimEnd('/')).ToArray();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("PosFrontendPolicy", policy =>
     {
         policy.WithOrigins(allowedOrigins)
+              .SetIsOriginAllowed(origin => 
+              {
+                  if (string.IsNullOrEmpty(origin)) return false;
+                  var uri = new Uri(origin);
+                  return uri.Host == "localhost" || uri.Host == "127.0.0.1" || allowedOrigins.Contains(origin.TrimEnd('/'));
+              })
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
