@@ -167,25 +167,5 @@ public static class DbInitializer
 
         await context.Products.AddRangeAsync(products);
         await context.SaveChangesAsync();
-
-        if (!await context.Tables.AnyAsync())
-        {
-            var tables = new List<RestaurantTable>
-            {
-                new() { TableNumber = "T-01", Zone = "Main Hall", Capacity = 2, Status = TableStatus.Available },
-                new() { TableNumber = "T-02", Zone = "Main Hall", Capacity = 4, Status = TableStatus.Available },
-                new() { TableNumber = "T-03", Zone = "Main Hall", Capacity = 4, Status = TableStatus.Available },
-                new() { TableNumber = "T-04", Zone = "Main Hall", Capacity = 6, Status = TableStatus.Available },
-                new() { TableNumber = "T-05", Zone = "Patio (Outdoor)", Capacity = 4, Status = TableStatus.Available },
-                new() { TableNumber = "T-06", Zone = "Patio (Outdoor)", Capacity = 4, Status = TableStatus.Available },
-                new() { TableNumber = "T-07", Zone = "Patio (Outdoor)", Capacity = 2, Status = TableStatus.Available },
-                new() { TableNumber = "VIP-1", Zone = "VIP Room", Capacity = 8, Status = TableStatus.Available },
-                new() { TableNumber = "VIP-2", Zone = "VIP Room", Capacity = 10, Status = TableStatus.Available }
-            };
-
-            await context.Tables.AddRangeAsync(tables);
-            await context.SaveChangesAsync();
-        }
     }
 }
-
