@@ -48,7 +48,7 @@ namespace pos_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("pos_backend.Models.Order", b =>
@@ -90,15 +90,6 @@ namespace pos_backend.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PaymentStatus")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("ReadyAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("SentToKitchenAt")
-                        .HasColumnType("TEXT");
-
                     b.Property<int?>("ShiftId")
                         .HasColumnType("INTEGER");
 
@@ -108,9 +99,6 @@ namespace pos_backend.Migrations
                     b.Property<decimal>("Subtotal")
                         .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
-
-                    b.Property<int?>("TableId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("TableNumber")
                         .HasColumnType("TEXT");
@@ -126,9 +114,7 @@ namespace pos_backend.Migrations
 
                     b.HasIndex("ShiftId");
 
-                    b.HasIndex("TableId");
-
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("pos_backend.Models.OrderItem", b =>
@@ -174,7 +160,7 @@ namespace pos_backend.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("pos_backend.Models.Payment", b =>
@@ -214,7 +200,7 @@ namespace pos_backend.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("pos_backend.Models.Product", b =>
@@ -277,48 +263,7 @@ namespace pos_backend.Migrations
 
                     b.HasIndex("Sku");
 
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("pos_backend.Models.RestaurantTable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("CurrentOrderId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("TableNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Zone")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CurrentOrderId");
-
-                    b.HasIndex("TableNumber")
-                        .IsUnique();
-
-                    b.ToTable("Tables");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("pos_backend.Models.Shift", b =>
@@ -373,7 +318,7 @@ namespace pos_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shifts");
+                    b.ToTable("Shifts", (string)null);
                 });
 
             modelBuilder.Entity("pos_backend.Models.SyncOutbox", b =>
@@ -422,7 +367,7 @@ namespace pos_backend.Migrations
 
                     b.HasIndex("IsSynced");
 
-                    b.ToTable("SyncOutbox");
+                    b.ToTable("SyncOutbox", (string)null);
                 });
 
             modelBuilder.Entity("pos_backend.Models.Order", b =>
@@ -432,14 +377,7 @@ namespace pos_backend.Migrations
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("pos_backend.Models.RestaurantTable", "Table")
-                        .WithMany()
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("Shift");
-
-                    b.Navigation("Table");
                 });
 
             modelBuilder.Entity("pos_backend.Models.OrderItem", b =>
@@ -480,16 +418,6 @@ namespace pos_backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("pos_backend.Models.RestaurantTable", b =>
-                {
-                    b.HasOne("pos_backend.Models.Order", "CurrentOrder")
-                        .WithMany()
-                        .HasForeignKey("CurrentOrderId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("CurrentOrder");
                 });
 
             modelBuilder.Entity("pos_backend.Models.Category", b =>
