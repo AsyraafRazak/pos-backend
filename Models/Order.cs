@@ -22,8 +22,12 @@ public class Order
     public int Id { get; set; }
     public string OrderNumber { get; set; } = string.Empty; // e.g., "ORD-20260928-0001"
     public string? TableNumber { get; set; }
+    public int? TableId { get; set; }
+    public RestaurantTable? Table { get; set; }
+    
     public OrderType Type { get; set; } = OrderType.DineIn;
     public OrderStatus Status { get; set; } = OrderStatus.Completed;
+    public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Completed;
 
     public decimal Subtotal { get; set; }
     public decimal DiscountTotal { get; set; } = 0;
@@ -38,6 +42,8 @@ public class Order
     public Shift? Shift { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? SentToKitchenAt { get; set; }
+    public DateTime? ReadyAt { get; set; }
     public DateTime? CompletedAt { get; set; }
 
     public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
